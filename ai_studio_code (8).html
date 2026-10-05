@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>HALLOWEEN INVITATION // 12D2</title>
+
+  <!-- Google Fonts: Editorial Serif & Typewriter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Playfair+Display:ital,wght@0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #090808;
+      --paper: #e9e4d8;
+      --wine: #6e1017;
+      --orange: #b34a1b;
+      --gray: #888682;
+      --ink: #111111;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--paper);
+      font-family: 'Special Elite', monospace;
+      height: 100dvh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(110, 16, 23, 0.25) 0%, transparent 80%),
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.5), rgba(0,0,0,0.5) 1px, transparent 1px, transparent 2px);
+    }
+
+    /* Mobile editorial card container */
+    .app-screen {
+      width: 100%;
+      max-width: 420px;
+      height: 100dvh;
+      max-height: 880px;
+      position: relative;
+      background: #111010;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 0 50px rgba(0,0,0,0.9);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Photocopy & noise texture filter */
+    .app-screen::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(#fff 0.5px, transparent 0.5px);
+      background-size: 6px 6px;
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    /* Washi Tape styling */
+    .tape {
+      position: absolute;
+      width: 80px;
+      height: 22px;
+      background: rgba(230, 225, 210, 0.4);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      z-index: 10;
+    }
+    .tape-tl { top: -6px; left: 20px; transform: rotate(-4deg); }
+    .tape-tr { top: 12px; right: -20px; transform: rotate(45deg); }
+
+    /* Gate / Trigger jumpscare & Fullscreen */
+    #start-gate {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .seal-btn {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: var(--wine);
+      border: 3px solid #ff4444;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      cursor: pointer;
+      margin-top: 30px;
+      box-shadow: 0 0 25px rgba(255,0,0,0.4);
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(110,16,23,0.6); }
+      50% { transform: scale(1.08); box-shadow: 0 0 35px rgba(255,50,50,0.8); }
+    }
+
+    /* JUMPSCARE OVERLAY */
+    #jumpscare-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 400;
+      background-color: #000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    #jumpscare-layer.scare-active {
+      display: flex;
+      animation: screenGlitch 0.1s infinite alternate;
+    }
+
+    .ghost-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(180%) brightness(1.2) drop-shadow(0 0 30px red);
+      transform: scale(1.3);
+      animation: ghostZoom 0.9s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+    }
+
+    @keyframes ghostZoom {
+      0% { transform: scale(0.9); opacity: 0; }
+      20% { transform: scale(1.6); opacity: 1; filter: invert(1); }
+      40% { transform: scale(1.2); filter: contrast(250%) saturate(3); }
+      100% { transform: scale(1.8); opacity: 1; }
+    }
+
+    @keyframes screenGlitch {
+      0% { transform: translate(-8px, 6px); background: #3b0000; }
+      100% { transform: translate(8px, -6px); background: #000; }
+    }
+
+    /* Page Navigation Slider */
+    .pages-wrapper {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page {
+      position: absolute;
+      inset: 0;
+      padding: 35px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(60px);
+      transition: all 0.45s cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+
+    .page.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    /* Page 1: Hero Info */
+    .hero-label {
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      color: var(--orange);
+    }
+
+    .hero-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 2.2rem;
+      line-height: 1;
+      margin: 10px 0 16px 0;
+      color: var(--paper);
+      text-shadow: 2px 2px 0 var(--wine);
+    }
+
+    .paper-card {
+      background: var(--paper);
+      color: var(--ink);
+      padding: 22px 18px;
+      position: relative;
+      box-shadow: 4px 10px 25px rgba(0,0,0,0.8);
+      clip-path: polygon(1% 0%, 99% 2%, 98% 98%, 2% 100%);
+    }
+
+    .info-line {
+      margin: 12px 0;
+      font-size: 0.95rem;
+      border-bottom: 1px dashed rgba(0,0,0,0.25);
+      padding-bottom: 8px;
+    }
+    .info-line:last-child { border: none; padding-bottom: 0; }
+    .info-tag { font-size: 0.7rem; color: #555; display: block; text-transform: uppercase; }
+    .info-val { font-size: 1.15rem; font-weight: bold; color: var(--wine); }
+
+    /* Page 2: Activities */
+    .section-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.35rem;
+      color: var(--paper);
+      margin-bottom: 14px;
+      border-left: 3px solid var(--wine);
+      padding-left: 10px;
+    }
+
+    .act-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .act-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 14px;
+      position: relative;
+    }
+    .act-item strong {
+      color: var(--orange);
+      display: block;
+      font-size: 0.95rem;
+      margin-bottom: 2px;
+    }
+    .act-item span {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    /* Page 3: Dress Code */
+    .dress-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .dress-badge {
+      background: rgba(30, 25, 25, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 12px 6px;
+      text-align: center;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+    .dress-badge.picked {
+      background: var(--wine);
+      border-color: #ff3344;
+      color: #fff;
+      transform: scale(1.03);
+    }
+
+    /* Page 4: Rules */
+    .rule-item {
+      margin: 12px 0;
+      font-size: 0.88rem;
+      line-height: 1.35;
+      display: flex;
+      gap: 10px;
+    }
+    .rule-num {
+      color: var(--wine);
+      font-weight: bold;
+    }
+
+    /* Page 5: RSVP */
+    .rsvp-btn-box {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 25px 0;
+    }
+    .btn-choice {
+      padding: 16px;
+      font-family: 'Special Elite', monospace;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    .btn-yes {
+      background: var(--wine);
+      color: var(--paper);
+      box-shadow: 0 4px 15px rgba(110, 16, 23, 0.7);
+    }
+    .btn-maybe {
+      background: transparent;
+      color: var(--gray);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* Confirmation Modal */
+    .confirm-screen {
+      position: absolute;
+      inset: 0;
+      background: #0f0a0a;
+      z-index: 150;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 30px;
+    }
+    .confirm-screen.active {
+      display: flex;
+      animation: fadeIn 0.5s ease forwards;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Bottom Navigation Bar */
+    .nav-bar {
+      height: 60px;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: #0c0b0b;
+    }
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--paper);
+      font-family: 'Special Elite', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      padding: 8px 12px;
+    }
+    .nav-btn:disabled {
+      opacity: 0.2;
+      pointer-events: none;
+    }
+    .page-indicator {
+      font-size: 0.75rem;
+      color: var(--gray);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-screen" id="appRoot">
+    
+    <!-- START GATE / TRIGGER -->
+    <div id="start-gate">
+      <div style="font-size: 0.8rem; letter-spacing: 3px; color: var(--orange);">CONFIDENTIAL DOCUMENT</div>
+      <h2 style="font-family: 'Cinzel Decorative', serif; margin: 15px 0 10px 0; font-size: 1.6rem; color: #fff;">TOP SECRET INVITATION</h2>
+      <p style="color: var(--gray); font-size: 0.85rem; max-width: 260px; line-height: 1.5;">A dark seal awaits your touch to be broken...</p>
+      
+      <div class="seal-btn" onclick="triggerScare()">☠️</div>
+      <span style="font-size: 0.7rem; color: #666; margin-top: 14px; letter-spacing: 1px;">TAP SKULL TO UNSEAL & ENTER FULLSCREEN</span>
+    </div>
+
+    <!-- JUMPSCARE LAYER -->
+    <div id="jumpscare-layer">
+      <img src="https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=1000&auto=format&fit=crop" class="ghost-img" alt="Terrifying Presence">
+    </div>
+
+    <!-- 5 CONTENT PAGES -->
+    <div class="pages-wrapper">
+      
+      <!-- PAGE 1: TIME & VENUE -->
+      <div class="page active" id="p1">
+        <div>
+          <div class="hero-label">YOU’RE INVITED TO</div>
+          <h1 class="hero-title">HALLOWEEN<br>NIGHT</h1>
+        </div>
+
+        <div class="paper-card">
+          <div class="tape tape-tl"></div>
+          <div class="info-line">
+            <span class="info-tag">📅 DATE OF SUMMONING</span>
+            <span class="info-val">OCTOBER 31, 2026</span>
+          </div>
+          <div class="info-line">
+            <span class="info-tag">⏰ COMMENCEMENT HOUR</span>
+            <span class="info-val">07:30 PM — 11:00 PM</span>
+          </div>
+          <div class="info-line">
+            <span class="info-tag">📍 CLASSIFIED LOCATION</span>
+            <span class="info-val">Class 12D2 · Chamber C2.6</span>
+          </div>
+        </div>
+
+        <div style="font-size: 0.75rem; color: var(--gray); text-align: center; letter-spacing: 2px;">
+          SOMETHING IS WAITING AFTER DARK...
+        </div>
+      </div>
+
+      <!-- PAGE 2: ACTIVITIES -->
+      <div class="page" id="p2">
+        <div>
+          <div class="hero-label">EXPERIENCE</div>
+          <h2 class="section-title">WHAT AWAITS YOU AFTER DARK</h2>
+        </div>
+
+        <div class="act-list">
+          <div class="act-item">
+            <strong>🕯️ Mystery Games</strong>
+            <span>Ruthless psychological challenges in the dark.</span>
+          </div>
+          <div class="act-item">
+            <strong>🎭 Best Costume Contest</strong>
+            <span>Unleash your most terrifying attire.</span>
+          </div>
+          <div class="act-item">
+            <strong>🦇 Halloween Party</strong>
+            <span>Music · Games · Dancing until the witching hour.</span>
+          </div>
+          <div class="act-item">
+            <strong>🔮 Secret Challenge</strong>
+            <span>A covert trial revealed only after you enter!</span>
+          </div>
+          <div class="act-item">
+            <strong>📸 Photo Corner</strong>
+            <span>Immortalize your cursed moments forever.</span>
+          </div>
+        </div>
+
+        <div style="font-size: 0.7rem; color: #555; text-align: center;">THERE IS NO TURNING BACK ONCE YOU STEP IN</div>
+      </div>
+
+      <!-- PAGE 3: DRESS CODE -->
+      <div class="page" id="p3">
+        <div>
+          <div class="hero-label">DRESS CODE</div>
+          <h2 class="section-title">WHO WILL YOU BECOME TONIGHT?</h2>
+          <p style="font-size: 0.8rem; color: var(--gray); margin-top: 5px;">Select your dark alter ego:</p>
+        </div>
+
+        <div class="dress-grid">
+          <div class="dress-badge" onclick="selectDress(this)">🦇 VAMPIRE</div>
+          <div class="dress-badge" onclick="selectDress(this)">🧙‍♀️ WITCH</div>
+          <div class="dress-badge" onclick="selectDress(this)">👻 GHOST</div>
+          <div class="dress-badge" onclick="selectDress(this)">😈 DEMON</div>
+          <div class="dress-badge" onclick="selectDress(this)">🪽 DARK ANGEL</div>
+          <div class="dress-badge" onclick="selectDress(this)">👁️ CREATURE</div>
+        </div>
+
+        <div class="paper-card" style="padding: 12px; font-size: 0.75rem; text-align: center; background: #222; color: #ddd;">
+          "Wear something that makes the shadows stare back."
+        </div>
+      </div>
+
+      <!-- PAGE 4: RULES -->
+      <div class="page" id="p4">
+        <div>
+          <div class="hero-label">STRICT COMPLIANCE</div>
+          <h2 class="section-title">RULES OF THE NIGHT</h2>
+        </div>
+
+        <div style="background: rgba(20,20,20,0.7); border: 1px dashed rgba(255,255,255,0.2); padding: 18px 14px;">
+          <div class="rule-item">
+            <span class="rule-num">01.</span>
+            <span>Come dressed for the occasion.</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-num">02.</span>
+            <span>Bring your most fearless energy.</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-num">03.</span>
+            <span>No spoilers. Keep total secrecy.</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-num">04.</span>
+            <span>Do not leave before the night ends.</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-num">05.</span>
+            <span style="color: var(--orange); font-weight: bold;">Most importantly — have fun & survive.</span>
+          </div>
+        </div>
+
+        <div style="font-size: 0.72rem; color: var(--gray); text-align: center;">VIOLATORS WILL BE CONDEMNED TO CLEAN CHAMBER C2.6</div>
+      </div>
+
+      <!-- PAGE 5: RSVP -->
+      <div class="page" id="p5">
+        <div>
+          <div class="hero-label">FINAL INQUISITION</div>
+          <h2 class="hero-title" style="font-size: 1.9rem; margin-top: 10px;">WILL YOU<br>JOIN US?</h2>
+          <p style="font-size: 0.85rem; color: var(--gray);">The doors of 12D2 seal shut precisely at 07:30 PM.</p>
+        </div>
+
+        <div class="rsvp-btn-box">
+          <button class="btn-choice btn-yes" onclick="confirmYes()">[ YES, I’M COMING ]</button>
+          <button class="btn-choice btn-maybe" id="btnMaybe" onclick="trollMaybe()">[ MAYBE ]</button>
+        </div>
+
+        <div style="text-align: center;">
+          <span style="font-size: 0.8rem; letter-spacing: 2px; color: var(--wine);">SEE YOU AFTER DARK.</span>
+        </div>
+
+        <!-- RSVP Confirmation Modal -->
+        <div class="confirm-screen" id="confirmScreen">
+          <div style="font-size: 3rem; margin-bottom: 15px;">🩸</div>
+          <h3 style="font-family: 'Cinzel Decorative', serif; color: var(--orange); font-size: 1.4rem; margin-bottom: 12px; line-height: 1.2;">YOUR PRESENCE HAS BEEN CONFIRMED.</h3>
+          <p style="font-size: 0.95rem; color: var(--paper); line-height: 1.6;">We’ll be waiting after dark.<br><strong style="color: var(--wine);">Class 12D2 · Chamber C2.6</strong></p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="nav-bar">
+      <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>◀ PREV</button>
+      <div class="page-indicator" id="pageIndicator">PAGE 1 / 5</div>
+      <button class="nav-btn" id="nextBtn" onclick="changePage(1)">NEXT ▶</button>
+    </div>
+
+  </div>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 5;
+
+    // REQUEST FULLSCREEN ON USER GESTURE (Android / Chrome / Safari fallback)
+    function goFullscreen() {
+      const elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen().catch(() => {});
+      } else if (elem.webkitRequestFullscreen) { /* Safari / iOS Chrome */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    }
+
+    // HORROR SYNTHESIZER AUDIO (Web Audio API)
+    function playScreech() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 1.2);
+
+        gain.gain.setValueAtTime(1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.2);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 1.2);
+      } catch (e) {
+        console.log("Audio waiting for user gesture.");
+      }
+    }
+
+    // TRIGGER JUMPSCARE & ENTER FULLSCREEN
+    function triggerScare() {
+      goFullscreen();
+      playScreech();
+
+      document.getElementById('start-gate').style.display = 'none';
+      const scare = document.getElementById('jumpscare-layer');
+      scare.classList.add('scare-active');
+
+      // Vibrate mobile device if supported
+      if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 300, 100, 400]);
+      }
+
+      // Display scare for 1.1s then reveal the invitation
+      setTimeout(() => {
+        scare.classList.remove('scare-active');
+        scare.style.display = 'none';
+      }, 1100);
+    }
+
+    // PAGE NAVIGATION
+    function updatePages() {
+      for (let i = 1; i <= totalPages; i++) {
+        document.getElementById(`p${i}`).classList.remove('active');
+      }
+      document.getElementById(`p${currentPage}`).classList.add('active');
+      document.getElementById('pageIndicator').innerText = `PAGE ${currentPage} / ${totalPages}`;
+
+      document.getElementById('prevBtn').disabled = (currentPage === 1);
+      document.getElementById('nextBtn').disabled = (currentPage === totalPages);
+    }
+
+    function changePage(direction) {
+      currentPage += direction;
+      if (currentPage < 1) currentPage = 1;
+      if (currentPage > totalPages) currentPage = totalPages;
+      updatePages();
+    }
+
+    // DRESS CODE PICKER
+    function selectDress(element) {
+      document.querySelectorAll('.dress-badge').forEach(b => b.classList.remove('picked'));
+      element.classList.add('picked');
+    }
+
+    // RSVP ACTIONS
+    function confirmYes() {
+      document.getElementById('confirmScreen').classList.add('active');
+    }
+
+    function trollMaybe() {
+      const btn = document.getElementById('btnMaybe');
+      btn.innerText = "NO CHANCE TO ESCAPE 😈";
+      btn.style.color = "#ff4444";
+      btn.style.borderColor = "#ff4444";
+      setTimeout(() => {
+        confirmYes();
+      }, 700);
+    }
+  </script>
+</body>
+</html>
